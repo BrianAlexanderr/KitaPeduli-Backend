@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -15,53 +14,11 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
-  id_firebase     String
-  name            String
-  email           String           @unique
-  phoneNumber     String?
-  rewardPoints    Int              @default(0)
-  vouchers        UserVoucher[]
-  registeredEvents UserEvent[]         
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-}
-
-model Voucher {
-  id        Int           @id @default(autoincrement())
-  code      String        @unique
-  discount  Float
-  quantity  Int           // available stock
-  users     UserVoucher[]
-  createdAt DateTime      @default(now())
-}
-
-model UserVoucher {
-  id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  voucher   Voucher  @relation(fields: [voucherId], references: [id])
-  voucherId Int
-  redeemedAt DateTime @default(now())
-
-  @@unique([userId, voucherId]) // ensures one user can redeem a voucher only once
-}
-
-model Event {
-  id         Int       @id @default(autoincrement())
-  title      String
-  date       DateTime
-  users      UserEvent[]    
-  createdAt  DateTime  @default(now())
-}
-
-model UserEvent {
   id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int
-  event       Event    @relation(fields: [eventId], references: [id])
-  eventId     Int
-  registeredAt DateTime @default(now())
-
-  @@unique([userId, eventId]) // prevents duplicate registration
+  id_firebase String   @unique
+  name        String
+  email       String   @unique
+  phone       String?
+  points      Int      @default(0)
+  createdAt   DateTime @default(now())
 }
